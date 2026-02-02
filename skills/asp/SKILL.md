@@ -1,7 +1,7 @@
 ---
 name: asp
-description: Manage MongoDB Atlas Stream Processing pipelines - create, deploy, monitor, and optimize streaming data workloads
-user_invocable: true
+description: This skill should be used when the user asks to "manage stream processors", "list processors", "start processor", "stop processor", "show workspaces", or discusses MongoDB Atlas Stream Processing, ASP pipelines, or streaming data workloads.
+version: 1.0.0
 ---
 
 # MongoDB Atlas Stream Processing
