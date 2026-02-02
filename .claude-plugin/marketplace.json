@@ -1,4 +1,8 @@
 {
+  "name": "asp-marketplace",
+  "owner": {
+    "name": "Kenny Gorman"
+  },
   "plugins": [
     {
       "name": "asp",
