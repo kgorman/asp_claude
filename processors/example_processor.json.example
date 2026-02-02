@@ -1,0 +1,42 @@
+{
+    "name": "example_processor",
+    "description": "Example stream processor that filters and transforms data",
+    "pipeline": [
+        {
+            "$source": {
+                "connectionName": "http_source",
+                "timeField": { "$dateFromString": { "dateString": "$timestamp" }}
+            }
+        },
+        {
+            "$match": {
+                "status": "active"
+            }
+        },
+        {
+            "$addFields": {
+                "processed_at": "$$NOW",
+                "processor_name": "example_processor"
+            }
+        },
+        {
+            "$project": {
+                "timestamp": 1,
+                "processed_at": 1,
+                "processor_name": 1,
+                "data": 1,
+                "status": 1
+            }
+        },
+        {
+            "$merge": {
+                "into": {
+                    "connectionName": "Cluster01",
+                    "db": "stream_output",
+                    "coll": "processed_data"
+                },
+                "whenNotMatched": "insert"
+            }
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "asp",
+  "description": "MongoDB Atlas Stream Processing - manage streaming data pipelines with natural language",
+  "version": "1.0.0",
+  "author": {
+    "name": "Kenny Gorman",
+    "url": "https://github.com/kgorman"
+  },
+  "repository": "https://github.com/kgorman/asp_claude",
+  "keywords": [
+    "mongodb",
+    "atlas",
+    "stream-processing",
+    "data-pipelines",
+    "real-time"
+  ]
+}

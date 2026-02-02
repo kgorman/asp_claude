@@ -1,0 +1,14 @@
+# MongoDB Atlas API Credentials
+# Get these from Atlas UI → Access Manager → API Keys
+
+PUBLIC_KEY=your_atlas_public_key_here
+PRIVATE_KEY=your_atlas_private_key_here
+
+# Atlas Project Information
+# Get from Atlas UI → Project Settings → General
+PROJECT_ID=your_atlas_project_id_here
+
+# Stream Processing Workspace Name
+# Use 'sp workspaces create' to create a new workspace if needed
+# Get from Atlas UI → Stream Processing → Your workspace name
+SP_WORKSPACE_NAME=your_stream_processing_workspace_name_here

@@ -1,0 +1,20 @@
+{
+  "connections": [
+    {
+      "name": "Cluster01",
+      "type": "Cluster",
+      "clusterName": "YourAtlasClusterName",
+      "dbRoleToExecute": {
+        "role": "atlasAdmin",
+        "type": "BUILT_IN"
+      },
+      "description": "MongoDB Atlas cluster connection for data storage"
+    },
+    {
+      "name": "http_source",
+      "type": "https",
+      "url": "https://api.example.com/stream",
+      "description": "HTTP source for streaming data"
+    }
+  ]
+}

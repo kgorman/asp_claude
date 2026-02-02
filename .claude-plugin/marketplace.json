@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    {
+      "name": "asp",
+      "description": "MongoDB Atlas Stream Processing - manage streaming data pipelines with natural language",
+      "version": "1.0.0",
+      "source": "https://github.com/kgorman/asp_claude"
+    }
+  ]
+}
