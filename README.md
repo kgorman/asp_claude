@@ -9,7 +9,20 @@ A Claude Code plugin for managing MongoDB Atlas Stream Processing (ASP) pipeline
 /plugin marketplace add kgorman/asp_claude
 
 # Install the plugin
-/plugin install asp@kgorman
+/plugin install asp@asp-skill
+```
+
+### Enable Auto-Updates (Recommended)
+
+To automatically receive plugin updates:
+```
+/plugin
+```
+→ Go to **Marketplaces** tab → Select **asp-skill** → **Enable auto-update**
+
+Or manually update anytime with:
+```bash
+/plugin update asp@asp-skill
 ```
 
 ## Setup
@@ -18,28 +31,29 @@ After installation, configure your Atlas API credentials:
 
 ```bash
 # Navigate to the plugin directory
-cd ~/.claude/plugins/asp
+cd ~/.claude/plugins/cache/asp-skill/asp/*/
 
 # Copy and edit the config file
 cp config.txt.example config.txt
 # Edit config.txt with your credentials
 ```
 
-Required credentials (get from Atlas UI):
-- `PUBLIC_KEY` - Atlas API public key
+Required credentials (get from [Atlas UI](https://cloud.mongodb.com)):
+- `PUBLIC_KEY` - Atlas API public key (Access Manager → API Keys)
 - `PRIVATE_KEY` - Atlas API private key
-- `PROJECT_ID` - Your Atlas project ID
+- `PROJECT_ID` - Your Atlas project ID (Project Settings)
 - `SP_WORKSPACE_NAME` - Stream Processing workspace name
 
 ## Usage
 
-Once installed, use the `/asp` skill or just ask Claude naturally:
+Once installed, just ask Claude naturally:
 
 - "Show me my stream processing workspaces"
 - "List all running processors"
 - "Start the solar_processor with auto tier selection"
 - "What tier should I use for my_processor?"
 - "Stop all processors"
+- "Get stats for my_processor"
 
 ## Features
 
