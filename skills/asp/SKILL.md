@@ -8,46 +8,34 @@ version: 1.0.0
 
 This skill manages MongoDB Atlas Stream Processing (ASP) pipelines using the `sp` CLI tool. Use natural language to create, deploy, monitor, and optimize streaming data workloads.
 
-## Plugin Location
+## Finding the sp Tool
 
-The `sp` tool is located relative to this skill file at `../../tools/sp`.
-
-To run commands, use the full path from the plugin install location:
+The `sp` CLI tool is installed with this plugin. To find it, use:
 ```bash
-~/.claude/plugins/cache/asp-marketplace/asp/1.0.0/tools/sp
+SP_TOOL=$(find ~/.claude/plugins/cache -name "sp" -path "*/asp/*/tools/*" 2>/dev/null | head -1)
 ```
+
+Then run commands with `$SP_TOOL`:
+```bash
+$SP_TOOL processors list
+```
+
+**IMPORTANT**: Always find the tool path first before running any sp commands.
 
 ## Quick Reference
 
-### List workspaces
+First, set the tool path:
 ```bash
-~/.claude/plugins/cache/asp-marketplace/asp/1.0.0/tools/sp workspaces list
+SP_TOOL=$(find ~/.claude/plugins/cache -name "sp" -path "*/asp/*/tools/*" 2>/dev/null | head -1)
 ```
 
-### List processors
-```bash
-~/.claude/plugins/cache/asp-marketplace/asp/1.0.0/tools/sp processors list
-```
-
-### Start a processor (auto-select tier)
-```bash
-~/.claude/plugins/cache/asp-marketplace/asp/1.0.0/tools/sp processors start -p <name> --auto
-```
-
-### Stop a processor
-```bash
-~/.claude/plugins/cache/asp-marketplace/asp/1.0.0/tools/sp processors stop -p <name>
-```
-
-### Get processor stats
-```bash
-~/.claude/plugins/cache/asp-marketplace/asp/1.0.0/tools/sp processors stats -p <name>
-```
-
-### Get tier recommendation
-```bash
-~/.claude/plugins/cache/asp-marketplace/asp/1.0.0/tools/sp processors tier-advise -p <name>
-```
+Then run commands:
+- List workspaces: `$SP_TOOL workspaces list`
+- List processors: `$SP_TOOL processors list`
+- Start processor: `$SP_TOOL processors start -p <name> --auto`
+- Stop processor: `$SP_TOOL processors stop -p <name>`
+- Get stats: `$SP_TOOL processors stats -p <name>`
+- Tier advice: `$SP_TOOL processors tier-advise -p <name>`
 
 ## Setup Requirements
 
