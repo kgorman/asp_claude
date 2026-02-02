@@ -114,6 +114,12 @@ Processors are JSON files defining streaming pipelines:
 - **$function** - Custom JavaScript transformations
 - **$merge** - Write to destination
 
+### IMPORTANT: Invalid Variables
+
+`$$NOW`, `$$ROOT`, `$$CURRENT` and similar MongoDB aggregation system variables are **NOT valid in Atlas Stream Processing pipelines**. Do not use them.
+
+For timestamps, use the `$source` timeField or pass timestamps from your data source.
+
 ## Tier Selection
 
 | Tier | Use Case |

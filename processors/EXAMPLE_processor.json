@@ -1,6 +1,7 @@
 {
+    "_comment": "THIS IS AN EXAMPLE FILE - Copy and modify for your own processors",
     "name": "example_processor",
-    "description": "Example stream processor that filters and transforms data",
+    "description": "Example stream processor - filters active records and writes to MongoDB",
     "pipeline": [
         {
             "$source": {
@@ -15,14 +16,12 @@
         },
         {
             "$addFields": {
-                "processed_at": "$$NOW",
                 "processor_name": "example_processor"
             }
         },
         {
             "$project": {
                 "timestamp": 1,
-                "processed_at": 1,
                 "processor_name": 1,
                 "data": 1,
                 "status": 1
