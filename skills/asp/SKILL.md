@@ -74,6 +74,23 @@ Copy from `config.txt.example` and fill in your Atlas API credentials.
 | `sp processors profile -p <name> --duration 300` | Profile for 5 minutes |
 | `sp processors profile -p <name> --continuous` | Continuous monitoring |
 
+### Collection Management (Data Verification)
+| Command | Description |
+|---------|-------------|
+| `sp collections count -c db.collection` | Count documents in a collection |
+| `sp collections query -c db.collection -l 10` | Query documents (limit 10) |
+| `sp collections query -c db.collection -f '{"status":"active"}'` | Query with filter |
+| `sp collections list -d dbname` | List all collections in database |
+| `sp collections ttl -c db.collection -s 3600 -f _ts` | Set TTL index (1 hour) |
+| `sp collections index -c db.collection --list` | List indexes on collection |
+
+### Materialized Views
+| Command | Description |
+|---------|-------------|
+| `sp materialized_views list` | List all materialized views |
+| `sp materialized_views create <name>` | Create a materialized view |
+| `sp materialized_views drop <name>` | Drop a materialized view |
+
 ## Creating Processors
 
 **IMPORTANT**: Before creating any processor, consult the official MongoDB ASP examples repo for best practices and valid patterns:
@@ -159,7 +176,19 @@ Use `--auto` to let the tool analyze and select the optimal tier.
 1. Create processor JSON in `processors/`
 2. `sp processors create -p <name>`
 3. `sp processors start -p <name> --auto`
-4. `sp processors stats -p <name>`
+4. `sp processors stats -p <name>` - Check for DLQ errors
+5. `sp collections count -c <db>.<output_collection>` - Verify data is flowing
+
+### Verify Data Flow
+After starting a processor with `$merge`, verify data reaches the destination:
+1. `sp processors stats -p <name>` - Check inputMessageCount > 0 and dlqMessageCount = 0
+2. `sp collections count -c mydb.output` - Confirm documents in target collection
+3. `sp collections query -c mydb.output -l 5` - Sample documents to verify structure
+
+**If count is 0 but stats show input:**
+- Check DLQ for errors: `sp collections query -c <dlq_db>.<dlq_coll> -l 10`
+- Verify `$merge` connectionName matches a valid cluster connection
+- Check field mappings in pipeline stages
 
 ### Troubleshoot Performance
 1. `sp processors list` - Check status
