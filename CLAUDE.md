@@ -180,6 +180,40 @@ Processors are defined as JSON files in the `processors/` directory. Each file s
 - **$function** - Custom JavaScript transformations
 - **$merge** - Write to destination
 
+##  Logic Guardrails & Architectural Rules (CRITICAL)
+Claude must strictly adhere to these constraints when generating or editing JSON in the `processors/` directory.
+
+### Prohibited Operators & ASP Limitations
+Claude must never suggest the following stages. If a user's request seems to require them, use the recommended ASP-native alternative:
+
+| Unsupported Stage | Why it's blocked | ASP-Native Alternative |
+| :--- | :--- | :--- |
+| **$facet** | Branching is not supported | Create multiple processor files. |
+| **$out** | Not designed for streams | Use **$merge** (Atlas) or **$emit** (Kafka). |
+| **$lookup** (to Kafka) | $lookup only targets Atlas | Use multiple **$source** topics if supported. |
+| **$graphLookup** | Recursive logic too high-latency | Use flat **$lookup** or pre-calculate. |
+| **$indexStats** | Operational stage | Use the **sp processors stats** CLI command. |
+| **Unbounded $sort** | Memory exhaustion risk | Use **$sort** strictly inside a **$window**. |
+
+### The "Linear" Rule
+- **One Source, One Sink:** Every pipeline MUST start with exactly one $source stage and end with exactly one sink stage ($emit or $merge).
+- **No Branching:** $facet is NOT supported. ASP pipelines are strictly linear.
+- **Side Outputs:** To achieve parallel processing paths, define **multiple separate processor files** reading from the same source.
+
+
+### Enrichment Strategy
+* **Multiple Lookups:** While only one `$source` (the trigger) is allowed, a pipeline can contain multiple `$lookup` or `$cachedLookup` stages for data enrichment.
+* **Lookup Choice:** Use `$lookup` for real-time accuracy; use `$cachedLookup` for high-performance reference data (requires SP30+ tier).
+
+### General Architectural Mapping (The "Pivot" Logic)
+When translating general stream processing concepts (from SQL, Flink, or Spark) into ASP, follow these fundamental transformations:
+
+* **Continuous Patterns over Rows:** ASP does not use SQL-style pattern matching. Instead, utilize **$match** for simple filters and **$window** (specifically windowed pipelines) for stateful pattern detection.
+* **Time Management (Watermarking):** ASP manages "lateness" and "idleness" within the **$window** stage configuration. Use `idleTimeout` and `expireAfter` to handle late-arriving data.
+* **Data Partitioning:** Concepts like `KeyBy` or `PartitionBy` must be mapped to the **partitionBy** field within $window or as part of an initial **$group** if the operation is bounded.
+* - **Data Joins:** Stream-to-Static joins must be implemented via **$lookup** or **$cachedLookup**. Stream-to-Stream joins are currently out-of-scope for single processors and should be handled via source-level merging or multiple processors.
+* - **Output Branching:** If the logic requires "Side Outputs" or "Splitting," you must implement **Multiple Linear Processors** reading from the same source topic.
+
 ## Tier Selection
 
 The `sp` CLI can automatically recommend optimal tiers based on pipeline complexity:
